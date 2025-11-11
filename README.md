@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+Research Project Tracker - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A responsive React + TypeScript frontend application for managing research projects, milestones, and documents with JWT authentication.
 
-## Available Scripts
+ Features
 
-In the project directory, you can run:
+Authentication System: JWT-based login and registration
+Role-Based Access Control: Admin and User roles with restricted routes
+Project Management: Complete CRUD operations for research projects
+Milestone Tracking: Create and manage project milestones
+Document Management: Upload, download, and manage project documents
+Admin Dashboard: System-wide statistics and overview
+Responsive Design: Mobile and desktop friendly using React Bootstrap
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Node.js (v16 or higher)
+npm or yarn
+Running Spring Boot backend API (default: http://localhost:8080)
 
-### `npm test`
+ Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Clone the repository
 
-### `npm run build`
+bashgit clone https://github.com/ydksoysa/frontend_researchTracker.git
+cd research-tracker
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Install dependencies
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+bashnpm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Configure API endpoint (if different from default)
+Edit src/services/api.ts and update the API_BASE_URL:
 
-### `npm run eject`
+typescriptconst API_BASE_URL = 'http://localhost:8080/api';
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Start the development server
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+bashnpm start
+The application will open at http://localhost:3000
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+ Tech Stack
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+React 18 with TypeScript
+React Router v6 for SPA navigation
+Axios for API communication
+Context API for state management
+React Bootstrap for UI components
+JWT Decode for token handling
