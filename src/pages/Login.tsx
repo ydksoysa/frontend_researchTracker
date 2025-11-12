@@ -4,6 +4,25 @@ import { Container, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { authAPI } from '../services/api';
+// small helper to decode JWT payload without external lib
+function decodeJwt(token: string) {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
+    const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = decodeURIComponent(
+      atob(payload)
+        .split('')
+        .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+    return JSON.parse(decoded);
+  } catch (e) {
+    return null;
+  }
+}
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -33,10 +52,11 @@ const Login: React.FC = () => {
     setApiError('');
 
     try {
-      const response = await authAPI.login(formData);
-      const token = response.data.token || response.data.accessToken;
+  const response: any = await authAPI.login(formData);
+  const token = response.data?.token || response.data?.accessToken;
       login(token);
-      navigate('/projects');
+      // Redirect to central dashboard which will forward based on role
+      navigate('/dashboard');
     } catch (error: any) {
       setApiError(error.response?.data?.message || 'Login failed. Please check your credentials.');
     } finally {

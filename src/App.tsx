@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext';
 import NavigationBar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProjectList from './pages/ProjectList';
@@ -11,7 +12,11 @@ import ProjectDetails from './pages/ProjectDetails';
 import Milestones from './pages/Milestones';
 import Documents from './pages/Documents';
 import AdminPanel from './pages/AdminPanel';
+import Dashboard from './pages/Dashboard';
+import PiDashboard from './pages/PiDashboard';
+import MemberDashboard from './pages/MemberDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 const App: React.FC = () => {
   return (
@@ -20,15 +25,44 @@ const App: React.FC = () => {
         <div className="min-vh-100 bg-light">
           <NavigationBar />
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             
+            {/* Protected Routes */}
             <Route
               path="/projects"
               element={
                 <ProtectedRoute>
                   <ProjectList />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard/pi"
+              element={
+                <ProtectedRoute allowedRoles={["PI"]}>
+                  <PiDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/dashboard/member"
+              element={
+                <ProtectedRoute allowedRoles={["MEMBER"]}>
+                  <MemberDashboard />
                 </ProtectedRoute>
               }
             />
@@ -60,6 +94,7 @@ const App: React.FC = () => {
               }
             />
             
+            {/* Admin Only Route */}
             <Route
               path="/admin"
               element={
@@ -69,7 +104,8 @@ const App: React.FC = () => {
               }
             />
             
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            {/* Fallback Route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
       </Router>

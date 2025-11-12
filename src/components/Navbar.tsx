@@ -27,6 +27,9 @@ const NavigationBar: React.FC = () => {
                 <Nav.Link as={NavLink} to="/projects">
                   Projects
                 </Nav.Link>
+                <Nav.Link as={NavLink} to="/dashboard">
+                  Dashboard
+                </Nav.Link>
                 <Nav.Link as={NavLink} to="/milestones">
                   Milestones
                 </Nav.Link>

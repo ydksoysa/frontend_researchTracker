@@ -1,6 +1,6 @@
 // src/contexts/AuthContext.tsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 interface User {
   id: string;
@@ -30,12 +30,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const decoded: any = jwtDecode(storedToken);
         if (decoded.exp * 1000 > Date.now()) {
+          const rawRole = decoded.role || decoded.authorities?.[0] || decoded.authorities?.[0]?.authority || 'MEMBER';
+          let role = typeof rawRole === 'string' ? rawRole : (rawRole?.authority || rawRole?.role || 'MEMBER');
+          role = role.toUpperCase();
+          if (role.startsWith('ROLE_')) role = role.replace('ROLE_', '');
+
           setToken(storedToken);
           setUser({
             id: decoded.sub || decoded.userId,
             username: decoded.username || decoded.sub,
             email: decoded.email || '',
-            role: decoded.role || decoded.authorities?.[0] || 'USER'
+            role
           });
         } else {
           localStorage.removeItem('token');
@@ -49,13 +54,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (newToken: string) => {
     try {
       const decoded: any = jwtDecode(newToken);
+      const rawRole = decoded.role || decoded.authorities?.[0] || decoded.authorities?.[0]?.authority || 'MEMBER';
+      let role = typeof rawRole === 'string' ? rawRole : (rawRole?.authority || rawRole?.role || 'MEMBER');
+      role = role.toUpperCase();
+      if (role.startsWith('ROLE_')) role = role.replace('ROLE_', '');
+
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser({
         id: decoded.sub || decoded.userId,
         username: decoded.username || decoded.sub,
         email: decoded.email || '',
-        role: decoded.role || decoded.authorities?.[0] || 'USER'
+        role
       });
     } catch (error) {
       console.error('Invalid token', error);
